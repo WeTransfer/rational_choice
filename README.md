@@ -2,6 +2,8 @@
 
 Makes a fuzzy logic choice based on a continuum of values. For when a "yes or no" is not-quite-good-enough.
 
+## Choice on one dimension of values
+
 Primary use is for things like load balancing. Imagine you have a server handling 14 connections,
 and you know that it can take about 20 maximum. When you decide whether to send the connection
 number 17 to it, you want to take a little margin and only send that connection sometimes, to
@@ -13,6 +15,20 @@ balance the choices - so you want to use a softer bound (a bit of a fuzzy logic)
     else
       ... # over capacity at the moment, try later
     end
+
+This way the return value of `choose()` will be determined by the probability of the value being `true` - i.e.
+how close it is to the upper bound. Values at or below the lower bound will always choose `false`. Values at
+or above the upper bound will always choose `true`.
+
+## Choice on multiple dimensions
+
+Useful to give rational choices on multiple values, averaged together.
+
+    num_clients = Dimension.new(200, 100)
+    bandwidth = Dimension.new(2048, 1024)
+    has_capacity = ManyDimensions.new(num_clients, bandwidth)
+    
+    will_accept_connection = has_capacity.choose(current_client_count, current_bandwidth)
 
 ## Contributing to rational_choice
  
