@@ -21,11 +21,13 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     ".rspec",
+    ".travis.yml",
     "Gemfile",
     "LICENSE.txt",
     "README.md",
     "Rakefile",
     "lib/rational_choice.rb",
+    "rational_choice.gemspec",
     "spec/rational_choice/dimension_spec.rb",
     "spec/rational_choice/many_dimensions_spec.rb",
     "spec/rational_choice_spec.rb",
