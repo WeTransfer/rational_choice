@@ -1,5 +1,7 @@
 # rational_choice
 
+[![Build Status](https://travis-ci.org/WeTransfer/rational_choice.svg?branch=master)](https://travis-ci.org/WeTransfer/rational_choice)
+
 Makes a fuzzy logic choice based on a continuum of values. For when a "yes or no" is not-quite-good-enough.
 
 ## Choice on one dimension of values
