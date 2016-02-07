@@ -47,7 +47,7 @@ describe 'RationalChoice::ManyDimensions' do
     it 'creates a very uniform distribution of values with random values across the board' do
       truthy = 0
       10_000.times { truthy += 1 if md.choose(rand, rand, rand) } # default rand() is 0..1
-      expect(truthy).to be_within(100).of(10_000 / 2)
+      expect(truthy).to be_within(200).of(10_000 / 2)
     end
   end
   
