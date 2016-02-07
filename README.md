@@ -11,7 +11,8 @@ and you know that it can take about 20 maximum. When you decide whether to send 
 number 17 to it, you want to take a little margin and only send that connection sometimes, to
 balance the choices - so you want to use a softer bound (a bit of a fuzzy logic).
 
-    will_accept_connection = RationalChoice::Dimension.new(20, 10) # ten connections is always safe
+    # ten connections is always safe
+    will_accept_connection = RationalChoice::Dimension.new(false_at_or_below: 20, true_at_or_above:10)
     if will_accept_connection.choose(server.current_connection_count + 1) # will give you a fuzzy choice
       server.accept(new_client)
     else
@@ -26,8 +27,8 @@ or above the upper bound will always choose `true`.
 
 Useful to give rational choices on multiple values, averaged together.
 
-    num_clients = Dimension.new(200, 100)
-    bandwidth = Dimension.new(2048, 1024)
+    num_clients = Dimension.new(false_at_or_below: 200, true_at_or_above: 100)
+    bandwidth = Dimension.new(false_at_or_below:2048, true_at_or_above: 1024)
     has_capacity = ManyDimensions.new(num_clients, bandwidth)
     
     will_accept_connection = has_capacity.choose(current_client_count, current_bandwidth)

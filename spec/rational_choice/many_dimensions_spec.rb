@@ -18,7 +18,7 @@ describe 'RationalChoice::ManyDimensions' do
     end
     
     let(:md) {
-      one_to_zero = RationalChoice::Dimension.new(0, 1)
+      one_to_zero = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1)
       RationalChoice::ManyDimensions.new(one_to_zero, one_to_zero, one_to_zero)
     }
     

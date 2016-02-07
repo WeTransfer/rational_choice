@@ -1,7 +1,7 @@
 # Tiny fuzzy-logic gate for making choices based on a continuum of permitted values
 # as opposed to a hard condition.
 module RationalChoice
-  VERSION = '1.0.0'
+  VERSION = '2.0.0'
   
   # Gets raised when a multidimensional choice has to be made with a wrong number
   # of values versus the number of dimensions
@@ -14,13 +14,13 @@ module RationalChoice
   class Dimension
     # Initializes a new Dimension to evaluate values
     #
-    # @param false_bound[#to_f, #<=>] the lower bound, at or below which the value will be considered false
-    # @param true_bound[#to_f, #<=>] the upper bound, at or above which the value will be considered true
-    def initialize(false_bound, true_bound)
-      raise DomainError, "Bounds were the same at #{false_bound}" if false_bound == true_bound
+    # @param false_at_or_below[#to_f, #<=>] the lower bound, at or below which the value will be considered false
+    # @param true_at_or_above[#to_f, #<=>] the upper bound, at or above which the value will be considered true
+    def initialize(false_at_or_below: , true_at_or_above:)
+      raise DomainError, "Bounds were the same at #{false_at_or_below}" if false_at_or_below == true_at_or_above
       
-      @lower, @upper = [false_bound, true_bound].sort
-      @flip_sign = [@lower, @upper].sort != [false_bound, true_bound]
+      @lower, @upper = [false_at_or_below, true_at_or_above].sort
+      @flip_sign = [@lower, @upper].sort != [false_at_or_below, true_at_or_above]
     end
     
     # Evaluate a value against the given false and true bound.
@@ -32,7 +32,7 @@ module RationalChoice
     # of the value being true, based on a linear interpolation.
     # For example:
     #
-    #     d = Dimension.new(0, 1)
+    #     d = Dimension.new(false_at_or_below: 0, true_at_or_above: 1)
     #     d.choose(0) # => false
     #     d.choose(1) # => true
     #     d.choose(0.5) #=> will be `true` in 50% of the cases (probability of 0.5)
@@ -43,15 +43,14 @@ module RationalChoice
     # number 17 to it, you want to take a little margin and only send that connection sometimes, to
     # balance the choices - so you want to use a softer bound (a bit of a fuzzy logic).
     #
-    #     will_accept_connection = Dimension.new(20, 10) # ten connections is always safe
+    #     # 10 connactions is doable, 20 connections means contention
+    #     will_accept_connection = Dimension.new(false_at_or_below: 20, true_at_or_above: 10)
     #     will_accept_connection.choose(server.current_connection_count + 1) # will give you a fuzzy choice
     #
     # @param value[#to_f, Comparable] a value to be evaluated (must be coercible to a Float and Comparable)
     # @return [Boolean] the chosen value based on probability and randomness
     def choose(value)
-      choice = if !fuzzy?(value)
-        value >= @upper
-      else
+      choice = if fuzzy?(value)
         # Interpolate the probability of the value being true
         delta = @upper.to_f - @lower.to_f
         v = (value - @lower).to_f
@@ -59,6 +58,9 @@ module RationalChoice
     
         r = Random.new # To override in tests if needed
         r.rand < t
+      else
+        # just seen where it is (below or above)
+        value >= @upper
       end
       choice ^ @flip_sign
     end
@@ -104,7 +106,7 @@ module RationalChoice
       evaluations = values.zip(@dimensions).map { |(v, d)| d.choose(v) }
       num_truthy_choices = evaluations.select{|e| e}.length
       
-      Dimension.new(0, evaluations.length).choose(num_truthy_choices)
+      Dimension.new(false_at_or_below: 0, true_at_or_above: evaluations.length).choose(num_truthy_choices)
     end
   end
 end
