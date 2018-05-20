@@ -4,4 +4,4 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rspec'
 require 'rational_choice'
 
-RSpec.configure {|c| c.order = 'random' }
+RSpec.configure { |c| c.order = 'random' }
