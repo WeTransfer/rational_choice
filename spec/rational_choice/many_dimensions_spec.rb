@@ -35,7 +35,7 @@ describe 'RationalChoice::ManyDimensions' do
     it 'returns "true" in approximately 50% of the cases when all the values are at 0.5' do
       truthy = 0
       10_000.times { truthy += 1 if md.choose(0.5, 0.5, 0.5) }
-      expect(truthy).to be_within(100).of(10_000 / 2)
+      expect(truthy).to be_within(200).of(10_000 / 2)
     end
 
     it 'returns "true" in approximately 10% of the cases when all the values are at 0.1' do
