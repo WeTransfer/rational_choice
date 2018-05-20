@@ -22,6 +22,16 @@ describe 'RationalChoice::ManyDimensions' do
       RationalChoice::ManyDimensions.new(one_to_zero, one_to_zero, one_to_zero)
     }
 
+    it 'accepts a custom seed and uses it to generate predictable choices' do
+      r = Random.new(42)
+      d1 = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1, random: r)
+      d2 = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1, random: r)
+      d3 = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1, random: r)
+      multi_d = RationalChoice::ManyDimensions.new(d1, d2, d3, random: r)
+      choices = (1..10).map { multi_d.choose(0.5, 0.2, 0.6) }
+      expect(choices).to eq([false, true, false, true, true, false, true, true, true, false])
+    end
+
     it 'returns "true" when all dimensions are at or above upper bound' do
       10_000.times { expect(md.choose(1, 1, 1)).to eq(true) }
       10_000.times { expect(md.choose(2, 2, 2)).to eq(true) }

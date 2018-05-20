@@ -1,7 +1,7 @@
 # Tiny fuzzy-logic gate for making choices based on a continuum of permitted values
 # as opposed to a hard condition.
 module RationalChoice
-  VERSION = '2.0.1'
+  VERSION = '2.1.0'
 
   # Gets raised when a multidimensional choice has to be made with a wrong number
   # of values versus the number of dimensions
@@ -16,9 +16,11 @@ module RationalChoice
     #
     # @param false_at_or_below[#to_f, #<=>] the lower bound, at or below which the value will be considered false
     # @param true_at_or_above[#to_f, #<=>] the upper bound, at or above which the value will be considered true
-    def initialize(false_at_or_below:, true_at_or_above:)
+    # @param random[Random] the RNG, defaults to a new Random
+    def initialize(false_at_or_below:, true_at_or_above:, random: Random.new)
       raise DomainError, "Bounds were the same at #{false_at_or_below}" if false_at_or_below == true_at_or_above
 
+      @random = random
       @lower, @upper = [false_at_or_below, true_at_or_above].sort
       @flip_sign = [@lower, @upper].sort != [false_at_or_below, true_at_or_above]
     end
@@ -55,9 +57,7 @@ module RationalChoice
         delta = @upper.to_f - @lower.to_f
         v = (value - @lower).to_f
         t = (v / delta)
-
-        r = Random.new # To override in tests if needed
-        r.rand < t
+        @random.rand < t
       else
         # just seen where it is (below or above)
         value >= @upper
@@ -79,8 +79,13 @@ module RationalChoice
   # will be first coerced into one (number of truthy evaluations vs. number of falsey evaluations)
   # and then a true/false value will be deduced from that.
   class ManyDimensions
-    def initialize(*dimensions)
+    # Initializes a new Dimension to evaluate values
+    #
+    # @param dimensions[Array<Dimension>] the dimensions to make a choice over
+    # @param random[Random] the RNG, defaults to a new Random
+    def initialize(*dimensions, random: Random.new)
       @dimensions = dimensions
+      @random = random
       raise CardinalityError, '%s has no dimensions to evaluate' % inspect if @dimensions.empty?
     end
 
@@ -106,7 +111,7 @@ module RationalChoice
       evaluations = values.zip(@dimensions).map { |(v, d)| d.choose(v) }
       num_truthy_choices = evaluations.select { |e| e }.length
 
-      Dimension.new(false_at_or_below: 0, true_at_or_above: evaluations.length).choose(num_truthy_choices)
+      Dimension.new(false_at_or_below: 0, true_at_or_above: evaluations.length, random: @random).choose(num_truthy_choices)
     end
   end
 end

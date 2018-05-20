@@ -39,6 +39,14 @@ describe 'RationalChoice::Dimension' do
     end
   end
 
+  describe 'with a given Random' do
+    it 'creates a predictable sequence of choices' do
+      d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1, random: Random.new(42))
+      choices = (1..10).map { d.choose(0.5) }
+      expect(choices).to eq([true, false, false, false, true, true, true, false, false, false])
+    end
+  end
+
   describe 'with values between thresholds creates a sensible choice distribution' do
     it 'for 0.5 on a continuum from 0 to 1' do
       d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1)
