@@ -1,7 +1,7 @@
 # Tiny fuzzy-logic gate for making choices based on a continuum of permitted values
 # as opposed to a hard condition.
 module RationalChoice
-  VERSION = '2.0.0'
+  VERSION = '2.0.1'
   
   # Gets raised when a multidimensional choice has to be made with a wrong number
   # of values versus the number of dimensions
