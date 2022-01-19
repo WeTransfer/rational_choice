@@ -1,6 +1,9 @@
 ---
 language: ruby
 cache: bundler
+dist: bionic
 rvm:
   - 3.0.2
-before_install: gem install bundler -v 2.3.4
+script:
+  - RUBYOPT=-W0 bundle exec rspec
+  - bundle exec rubocop --fail-level convention
