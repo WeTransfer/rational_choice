@@ -1,26 +1,35 @@
-require_relative 'lib/rational_choice'
+# frozen_string_literal: true
 
-Gem::Specification.new do |s|
-  s.name = 'rational_choice'
-  s.version = RationalChoice::VERSION
+require_relative "lib/rational_choice/version"
 
-  s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
-  s.require_paths = ['lib']
-  s.authors = ['Julik Tarkhanov']
-  s.date = Time.now.utc.strftime('%Y-%m-%d')
-  s.description = 'Fuzzy logic gate'
-  s.email = 'me@julik.nl'
-  s.extra_rdoc_files = ['LICENSE.txt', 'README.md']
-  s.files = `git ls-files -z`.split("\x0")
-  s.homepage = 'https://github.com/wetransfer/rational_choice'
-  s.licenses = ['MIT']
-  s.rubygems_version = '2.2.2'
-  s.summary = 'Makes life-concerning choices based on an informed coin toss'
+Gem::Specification.new do |spec|
+  spec.name = "rational_choice"
+  spec.version = RationalChoice::VERSION
+  spec.authors = ["Julik Tarkhanov", "grdw"]
+  spec.email = ["me@julik.nl", "gerard@wetransfer.com"]
 
-  s.specification_version = 4
-  s.add_development_dependency 'yard', '>= 0'
-  s.add_development_dependency 'rspec', '~> 3.4.0'
-  s.add_development_dependency 'rake', '~> 10'
-  s.add_development_dependency 'bundler', '~> 1.0'
-  s.add_development_dependency 'wetransfer_style', '0.5.0'
+  spec.summary = "Makes life-concerning choices based on an informed coin toss"
+  spec.description = "Fuzzy logic gate"
+  spec.homepage = "https://github.com/wetransfer/rational_choice"
+  spec.license = "MIT"
+  spec.required_ruby_version = ">= 2.6.0"
+
+  spec.metadata["homepage_uri"] = spec.homepage
+  spec.metadata["source_code_uri"] = spec.homepage
+
+  # Specify which files should be added to the gem when it is released.
+  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
+  spec.files = Dir.chdir(File.expand_path(__dir__)) do
+    `git ls-files -z`.split("\x0").reject do |f|
+      (f == __FILE__) || f.match(%r{\A(?:(?:test|spec|features)/|\.(?:git|travis|circleci)|appveyor)})
+    end
+  end
+  spec.bindir = "exe"
+  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.require_paths = ["lib"]
+
+  spec.add_development_dependency "bundler", "~> 2.0"
+  spec.add_development_dependency "rake", "~> 10"
+  spec.add_development_dependency "rspec", "~> 3.4.0"
+  spec.add_development_dependency "wetransfer_style", "1.0.0"
 end

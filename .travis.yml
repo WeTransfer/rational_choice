@@ -1,6 +1,9 @@
-rvm:
-  - 2.1.1
-  - 2.2.0
-  - 2.3.0
+---
+language: ruby
 cache: bundler
-sudo: false 
+dist: bionic
+rvm:
+  - 3.0.2
+script:
+  - RUBYOPT=-W0 bundle exec rspec
+  - bundle exec rubocop --fail-level convention

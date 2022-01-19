@@ -1,2 +1,48 @@
-inherit_gem:
-  wetransfer_style: ruby/default.yml
+AllCops:
+  NewCops: disable
+  TargetRubyVersion: 2.6
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Layout/LineLength:
+  Max: 120
+  Severity: convention
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - "spec/**/*"
+
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*"
+
+Metrics/MethodLength:
+  Max: 50
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/GuardClause:
+  Enabled: false
+
+Lint/MissingSuper:
+  Enabled: false
+
+Style/FormatString:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
