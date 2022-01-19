@@ -1,7 +1,9 @@
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+# frozen_string_literal: true
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
-require 'rspec'
-require 'rational_choice'
+require "rspec"
+require "rational_choice"
 
-RSpec.configure { |c| c.order = 'random' }
+RSpec.configure { |c| c.order = "random" }

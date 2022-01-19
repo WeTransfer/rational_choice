@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Tiny fuzzy-logic gate for making choices based on a continuum of permitted values
 # as opposed to a hard condition.
 module RationalChoice
@@ -51,15 +53,15 @@ module RationalChoice
     # @return [Boolean] the chosen value based on probability and randomness
     def choose(value)
       choice = if fuzzy?(value)
-        # Interpolate the probability of the value being true
-        delta = @upper.to_f - @lower.to_f
-        v = (value - @lower).to_f
-        t = (v / delta)
-        @random.rand < t
-      else
-        # just seen where it is (below or above)
-        value >= @upper
-      end
+                 # Interpolate the probability of the value being true
+                 delta = @upper.to_f - @lower.to_f
+                 v = (value - @lower).to_f
+                 t = (v / delta)
+                 @random.rand < t
+               else
+                 # just seen where it is (below or above)
+                 value >= @upper
+               end
       choice ^ @flip_sign
     end
 
@@ -84,7 +86,7 @@ module RationalChoice
     def initialize(*dimensions, random: Random.new)
       @dimensions = dimensions
       @random = random
-      raise CardinalityError, '%s has no dimensions to evaluate' % inspect if @dimensions.empty?
+      raise CardinalityError, "%s has no dimensions to evaluate" % inspect if @dimensions.empty?
     end
 
     # Performs a weighted choice, by first collecting choice results from all the dimensions,
@@ -103,13 +105,15 @@ module RationalChoice
     # @return [Boolean] true or false
     def choose(*values)
       if @dimensions.length != values.length
-        raise CardinalityError, '%s has %d dimensions but %d values were given' % [inspect, @dimensions.length, values.length]
+        raise CardinalityError,
+              format("%s has %d dimensions but %d values were given", inspect, @dimensions.length, values.length)
       end
 
       evaluations = values.zip(@dimensions).map { |(v, d)| d.choose(v) }
       num_truthy_choices = evaluations.select { |e| e }.length
 
-      Dimension.new(false_at_or_below: 0, true_at_or_above: evaluations.length, random: @random).choose(num_truthy_choices)
+      Dimension.new(false_at_or_below: 0, true_at_or_above: evaluations.length,
+                    random: @random).choose(num_truthy_choices)
     end
   end
 end

@@ -1,28 +1,30 @@
-require_relative '../spec_helper'
+# frozen_string_literal: true
 
-describe 'RationalChoice::ManyDimensions' do
-  describe '.new' do
-    it 'raises a CardinalityError when no dimensions are given' do
-      expect {
+require_relative "../spec_helper"
+
+describe "RationalChoice::ManyDimensions" do
+  describe ".new" do
+    it "raises a CardinalityError when no dimensions are given" do
+      expect do
         RationalChoice::ManyDimensions.new
-      }.to raise_error(RationalChoice::CardinalityError)
+      end.to raise_error(RationalChoice::CardinalityError)
     end
   end
 
-  describe '.choose' do
-    it 'raises a CardinalityError if the number of values does not match the number of dimensions' do
+  describe ".choose" do
+    it "raises a CardinalityError if the number of values does not match the number of dimensions" do
       md = RationalChoice::ManyDimensions.new(nil, nil, nil)
-      expect {
+      expect do
         md.choose(1, 2)
-      }.to raise_error(RationalChoice::CardinalityError)
+      end.to raise_error(RationalChoice::CardinalityError)
     end
 
-    let(:md) {
+    let(:md) do
       one_to_zero = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1)
       RationalChoice::ManyDimensions.new(one_to_zero, one_to_zero, one_to_zero)
-    }
+    end
 
-    it 'accepts a custom seed and uses it to generate predictable choices' do
+    it "accepts a custom seed and uses it to generate predictable choices" do
       r = Random.new(42)
       d1 = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1, random: r)
       d2 = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1, random: r)
@@ -54,7 +56,7 @@ describe 'RationalChoice::ManyDimensions' do
       expect(truthy).to be_within(100).of(10_000 / 10)
     end
 
-    it 'creates a very uniform distribution of values with random values across the board' do
+    it "creates a very uniform distribution of values with random values across the board" do
       truthy = 0
       10_000.times { truthy += 1 if md.choose(rand, rand, rand) } # default rand() is 0..1
       expect(truthy).to be_within(200).of(10_000 / 2)

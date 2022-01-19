@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.authors = ["Julik Tarkhanov", "grdw"]
   spec.email = ["me@julik.nl", "gerard@wetransfer.com"]
 
-  spec.summary = 'Makes life-concerning choices based on an informed coin toss'
+  spec.summary = "Makes life-concerning choices based on an informed coin toss"
   spec.description = "Fuzzy logic gate"
-  spec.homepage = 'https://github.com/wetransfer/rational_choice'
+  spec.homepage = "https://github.com/wetransfer/rational_choice"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.6.0"
 
@@ -28,8 +28,8 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency 'rspec', '~> 3.4.0'
-  spec.add_development_dependency 'rake', '~> 10'
-  spec.add_development_dependency 'bundler', '~> 2.0'
-  spec.add_development_dependency 'wetransfer_style', '0.5.0'
+  spec.add_development_dependency "bundler", "~> 2.0"
+  spec.add_development_dependency "rake", "~> 10"
+  spec.add_development_dependency "rspec", "~> 3.4.0"
+  spec.add_development_dependency "wetransfer_style", "1.0.0"
 end

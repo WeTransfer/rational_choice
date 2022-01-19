@@ -1,37 +1,39 @@
-require_relative '../spec_helper'
+# frozen_string_literal: true
 
-describe 'RationalChoice::Dimension' do
-  describe '.new' do
-    it 'raises a DomainError if the bounds are the same' do
-      expect {
+require_relative "../spec_helper"
+
+describe "RationalChoice::Dimension" do
+  describe ".new" do
+    it "raises a DomainError if the bounds are the same" do
+      expect do
         RationalChoice::Dimension.new(false_at_or_below: 2, true_at_or_above: 2)
-      }.to raise_error(/Bounds were the same at 2/)
+      end.to raise_error(/Bounds were the same at 2/)
     end
   end
 
-  describe 'with values at or beyound the thresholds' do
-    it 'always evaluates to true for values above upper threshold' do
+  describe "with values at or beyound the thresholds" do
+    it "always evaluates to true for values above upper threshold" do
       d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1)
       10_000.times do
         expect(d.choose(1.1)).to eq(true)
       end
     end
 
-    it 'always evaluates to true for values at upper threshold' do
+    it "always evaluates to true for values at upper threshold" do
       d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1)
       10_000.times do
         expect(d.choose(1)).to eq(true)
       end
     end
 
-    it 'always evaluates to false for values at lower threshold' do
+    it "always evaluates to false for values at lower threshold" do
       d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1)
       10_000.times do
         expect(d.choose(0)).to eq(false)
       end
     end
 
-    it 'always evaluates to false for values below lower threshold' do
+    it "always evaluates to false for values below lower threshold" do
       d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1)
       10_000.times do
         expect(d.choose(-0.0001)).to eq(false)
@@ -39,16 +41,16 @@ describe 'RationalChoice::Dimension' do
     end
   end
 
-  describe 'with a given Random' do
-    it 'creates a predictable sequence of choices' do
+  describe "with a given Random" do
+    it "creates a predictable sequence of choices" do
       d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1, random: Random.new(42))
       choices = (1..10).map { d.choose(0.5) }
       expect(choices).to eq([true, false, false, false, true, true, true, false, false, false])
     end
   end
 
-  describe 'with values between thresholds creates a sensible choice distribution' do
-    it 'for 0.5 on a continuum from 0 to 1' do
+  describe "with values between thresholds creates a sensible choice distribution" do
+    it "for 0.5 on a continuum from 0 to 1" do
       d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1)
       expect(d).to be_fuzzy(0.5)
 
@@ -60,7 +62,7 @@ describe 'RationalChoice::Dimension' do
       expect(trues).to be_within(1000).of(n_evaluations / 2)
     end
 
-    it 'for 0.1 on a continuum from 0 to 1' do
+    it "for 0.1 on a continuum from 0 to 1" do
       d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: 1)
       expect(d).to be_fuzzy(0.1)
 
@@ -72,7 +74,7 @@ describe 'RationalChoice::Dimension' do
       expect(trues).to be_within(1000).of(n_evaluations / 10)
     end
 
-    it 'for 0.5 on a continuum from 1 to 0' do
+    it "for 0.5 on a continuum from 1 to 0" do
       d = RationalChoice::Dimension.new(false_at_or_below: 1, true_at_or_above: 0)
       expect(d).to be_fuzzy(0.5)
 
@@ -83,7 +85,7 @@ describe 'RationalChoice::Dimension' do
       expect(falses).to be_within(1000).of(n_evaluations / 2)
     end
 
-    it 'for 0.1 on a continuum from 1 to 0' do
+    it "for 0.1 on a continuum from 1 to 0" do
       d = RationalChoice::Dimension.new(false_at_or_below: 1, true_at_or_above: 0)
       expect(d).to be_fuzzy(0.1)
 
@@ -95,7 +97,7 @@ describe 'RationalChoice::Dimension' do
       expect(trues).to be_within(1000).of(n_evaluations / 10 * 9) # Over 90% of the choices must be trues
     end
 
-    it 'for -0.5 on a continuum from -1 to 0' do
+    it "for -0.5 on a continuum from -1 to 0" do
       d = RationalChoice::Dimension.new(false_at_or_below: -1, true_at_or_above: 0)
       expect(d).to be_fuzzy(-0.5)
 
@@ -106,7 +108,7 @@ describe 'RationalChoice::Dimension' do
       expect(trues).to be_within(1000).of(n_evaluations / 2)
     end
 
-    it 'for -0.1 on a continuum from -1 to 0' do
+    it "for -0.1 on a continuum from -1 to 0" do
       d = RationalChoice::Dimension.new(false_at_or_below: -1, true_at_or_above: 0)
       expect(d).to be_fuzzy(-0.1)
 
@@ -118,7 +120,7 @@ describe 'RationalChoice::Dimension' do
       expect(trues).to be_within(1000).of(n_evaluations / 10 * 9) # Over 90% of the choices must be trues
     end
 
-    it 'for -0.5 on a continuum from 0 to -1' do
+    it "for -0.5 on a continuum from 0 to -1" do
       d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: -1)
       expect(d).to be_fuzzy(-0.5)
 
@@ -129,7 +131,7 @@ describe 'RationalChoice::Dimension' do
       expect(trues).to be_within(1000).of(n_evaluations / 2)
     end
 
-    it 'for -0.1 on a continuum from 0 to -1' do
+    it "for -0.1 on a continuum from 0 to -1" do
       d = RationalChoice::Dimension.new(false_at_or_below: 0, true_at_or_above: -1)
       expect(d).to be_fuzzy(-0.1)
 
