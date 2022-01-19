@@ -5,8 +5,8 @@ require_relative "lib/rational_choice/version"
 Gem::Specification.new do |spec|
   spec.name = "rational_choice"
   spec.version = RationalChoice::VERSION
-  spec.authors = ["grdw"]
-  spec.email = ["gerard@wetransfer.com"]
+  spec.authors = ["Julik Tarkhanov", "grdw"]
+  spec.email = ["me@julik.nl", "gerard@wetransfer.com"]
 
   spec.summary = 'Makes life-concerning choices based on an informed coin toss'
   spec.description = "Fuzzy logic gate"
