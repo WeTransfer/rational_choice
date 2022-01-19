@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rational_choice (2.1.0)
+    rational_choice (2.1.1)
 
 GEM
   remote: https://rubygems.org/
@@ -40,7 +40,7 @@ GEM
       rubocop (= 0.52.1)
 
 PLATFORMS
-  x86_64-darwin-20
+  ruby
 
 DEPENDENCIES
   bundler (~> 2.0)
