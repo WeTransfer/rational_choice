@@ -40,3 +40,9 @@ Style/GuardClause:
 
 Lint/MissingSuper:
   Enabled: false
+
+Style/FormatString:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false

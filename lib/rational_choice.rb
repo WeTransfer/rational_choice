@@ -101,19 +101,20 @@ module RationalChoice
     #     within_positive_3d_space.choose(1.1, 123, 1) #=> true
     #     within_positive_3d_space.choose(1, 0.5, 0.7) #=> true or false depending on 3 probabilities
     #
-    # @param values[Array<Comparable,#to_f>] an array of values of the same size as the `dimensions` given to `initialize`
+    # @param values[Array<Comparable,#to_f>] an array of values of the same size as
+    # the `dimensions` given to `initialize`
     # @return [Boolean] true or false
     def choose(*values)
       if @dimensions.length != values.length
         raise CardinalityError,
-              format("%s has %d dimensions but %d values were given", inspect, @dimensions.length, values.length)
+          format("%s has %d dimensions but %d values were given", inspect, @dimensions.length, values.length)
       end
 
       evaluations = values.zip(@dimensions).map { |(v, d)| d.choose(v) }
       num_truthy_choices = evaluations.select { |e| e }.length
 
       Dimension.new(false_at_or_below: 0, true_at_or_above: evaluations.length,
-                    random: @random).choose(num_truthy_choices)
+        random: @random).choose(num_truthy_choices)
     end
   end
 end
